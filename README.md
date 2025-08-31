@@ -1,5 +1,8 @@
-# 🧠 MinD: Manipulate in Dream  
-*A Dual-System World Model for Real-Time Planning and Implicit Risk Analysis*
+# 🧠 MinD: Learning A Dual-System World Model for Real-Time Planning and Action Consistency Video Generation
+*Xiaowei Chi1,2*, Kuangzhi Ge3*, Jiaming Liu3†, Siyuan Zhou2, Peidong Jia3, Zichen He3,
+Rui Zhao1, Yuzhen Liu1, Tingguang Li1, Sirui Han2, Shanghang Zhang3✉, Yike Guo2✉
+
+1Tencent RoboticsX, 2Hong Kong University of Science and Technology 3Peking University*
 
 **MinD** is a dual-system world model for robotics that unifies video imagination and action generation. It enables real-time planning, implicit risk analysis, and explainable control. By combining a low-frequency visual diffusion model and a high-frequency action policy, MinD supports fast, safe, and semantically grounded decision-making for embodied agents.
 
