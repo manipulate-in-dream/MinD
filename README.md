@@ -1,15 +1,20 @@
 # 🧠 MinD: Learning A Dual-System World Model for Real-Time Planning and Action Consistency Video Generation
-*Xiaowei Chi1,2*, Kuangzhi Ge3*, Jiaming Liu3†, Siyuan Zhou2, Peidong Jia3, Zichen He3,
-Rui Zhao1, Yuzhen Liu1, Tingguang Li1, Sirui Han2, Shanghang Zhang3✉, Yike Guo2✉
 
-1Tencent RoboticsX, 2Hong Kong University of Science and Technology 3Peking University*
+**Xiaowei Chi<sup>1,2</sup>\***, **Kuangzhi Ge<sup>3</sup>\***, **Jiaming Liu<sup>3</sup>†**,  
+**Siyuan Zhou<sup>2</sup>**, **Peidong Jia<sup>3</sup>**, **Zichen He<sup>3</sup>**,  
+**Rui Zhao<sup>1</sup>**, **Yuzhen Liu<sup>1</sup>**, **Tingguang Li<sup>1</sup>**,  
+**Sirui Han<sup>2</sup>**, **Shanghang Zhang<sup>3</sup>✉**, **Yike Guo<sup>2</sup>✉**
 
-**MinD** is a dual-system world model for robotics that unifies video imagination and action generation. It enables real-time planning, implicit risk analysis, and explainable control. By combining a low-frequency visual diffusion model and a high-frequency action policy, MinD supports fast, safe, and semantically grounded decision-making for embodied agents.
+<sup>1</sup>Tencent RoboticsX, <sup>2</sup>Hong Kong University of Science and Technology,  
+<sup>3</sup>Peking University
 
-> 📄 [arXiv Paper](https://arxiv.org/abs/2506.18897)
-> 🌐 [Project Website](https://manipulate-in-dream.github.io)
 ---
 
+**MinD** is a dual-system world model for robotics that unifies **video imagination** and **action generation**. It enables **real-time planning**, **implicit risk analysis**, and **explainable control**. By combining a **low-frequency visual diffusion model** and a **high-frequency action policy**, MinD supports fast, safe, and semantically grounded decision-making for embodied agents.
+
+### Links  
+📄 [![arXiv](https://img.shields.io/badge/arXiv-2506.18897-b31b1b.svg)](https://arxiv.org/abs/2506.18897)  
+🌐 [![Project Website](https://img.shields.io/badge/Website-manipulate--in--dream.github.io-blue)](https://manipulate-in-dream.github.io)
 ## ✨ Features
 
 - **Dual Diffusion System**:  
