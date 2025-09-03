@@ -1,0 +1,97 @@
+# MinD Project Configuration
+# This file provides default configuration for the MinD project.
+# Environment variables take precedence over these settings.
+#
+# Environment variables:
+#   MIND_DATA_ROOT: Root directory for data files
+#   MIND_MODEL_ROOT: Root directory for model checkpoints
+#   MIND_OUTPUT_ROOT: Root directory for outputs
+#   MIND_DATASET_ROOT: Root directory for datasets
+
+# Data paths (relative paths are resolved from project root)
+data_root: ./data
+model_root: ./checkpoints
+output_root: ./outputs
+dataset_root: ./data/datasets
+
+# Model-specific configurations
+video_models:
+  dynamicrafter:
+    default_checkpoint: null  # Set to checkpoint path or null for auto-discovery
+    config_path: ./DynamiCrafter/configs/inference_1024_v1.0.yaml
+    
+  vpp:
+    checkpoint_path: null
+    config_path: null
+
+action_models:
+  dp_calvin:
+    checkpoint_path: null
+    config_path: null
+    
+  hidiff_policy:
+    checkpoint_path: null
+    config_path: null
+
+vla_models:
+  vgmact:
+    checkpoint_path: null
+    config_path: null
+    sys_path: ./DynamiCrafter  # Relative to project root
+    
+  vppvla:
+    checkpoint_path: null
+    config_path: null
+
+# Dataset configurations
+datasets:
+  rtx_dataset:
+    path: null  # Override with actual dataset path
+    statistics_json: null
+    
+  calvin:
+    path: null
+    meta_csv: null
+    
+  rlbench:
+    path: null
+    meta_csv: null
+    
+  robomind:
+    path: ./rlds_videos/Robomind_gkz_rlds_wrist
+    meta_csv: ./Robomind_rlds_wrist.csv
+
+# Training configurations
+training:
+  batch_size: 32
+  learning_rate: 1e-4
+  num_epochs: 100
+  checkpoint_interval: 1000
+  log_interval: 100
+  
+# Inference configurations
+inference:
+  device: cuda  # cuda or cpu
+  precision: fp16  # fp16, fp32, or bf16
+  batch_size: 1
+  
+# Video generation settings
+video_generation:
+  fps: 8
+  resolution: [256, 256]
+  num_frames: 16
+  save_format: mp4
+  
+# Logging configurations
+logging:
+  level: INFO
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file_logging: true
+  console_logging: true
+
+# Distributed training settings (if applicable)
+distributed:
+  backend: nccl
+  init_method: env://
+  world_size: 1
+  rank: 0

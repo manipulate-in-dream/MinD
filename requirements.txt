@@ -1,0 +1,64 @@
+# MinD Requirements
+# Python >= 3.8 required
+
+# Core dependencies
+torch>=2.0.0
+torchvision>=0.15.0
+numpy>=1.21.0
+pillow>=9.0.0
+opencv-python>=4.7.0
+scipy>=1.10.0
+scikit-learn>=1.2.0
+matplotlib>=3.6.0
+
+# Deep Learning frameworks
+pytorch-lightning>=2.0.0
+transformers>=4.30.0
+diffusers>=0.21.0
+accelerate>=0.20.0
+einops>=0.6.1
+timm>=0.9.0
+
+# Video processing
+decord>=0.6.0
+imageio>=2.25.0
+imageio-ffmpeg>=0.4.8
+av>=10.0.0
+
+# Configuration and utilities
+hydra-core>=1.3.0
+omegaconf>=2.3.0
+pyyaml>=6.0
+python-dotenv>=1.0.0
+
+# Logging and monitoring
+wandb>=0.15.0
+tensorboard>=2.13.0
+tqdm>=4.65.0
+
+# Data processing
+pandas>=1.5.0
+h5py>=3.8.0
+zarr>=2.14.0
+tensorflow-datasets>=4.9.0
+
+# Model serving
+flask>=2.3.0
+fastapi>=0.100.0
+uvicorn>=0.22.0
+
+# Development tools (optional)
+pytest>=7.3.0
+black>=23.0.0
+flake8>=6.0.0
+isort>=5.12.0
+pre-commit>=3.3.0
+
+# Additional dependencies for specific models
+open-clip-torch>=2.20.0
+clip @ git+https://github.com/openai/CLIP.git
+deepspeed>=0.10.0
+
+# Environment-specific (uncomment as needed)
+# xformers>=0.0.20  # For memory-efficient attention
+# flash-attn>=2.0.0  # For FlashAttention support

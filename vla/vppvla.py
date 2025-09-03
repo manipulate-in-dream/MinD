@@ -2,12 +2,15 @@ import argparse
 import os
 from pathlib import Path
 import numpy as np
+import sys
 
 import hydra
 import torch
 from pytorch_lightning import seed_everything
 
-import numpy as np
+# Add parent directory to path to import config module
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from config import get_path_config
 
 from policy_evaluation.utils import get_default_beso_and_env
 from policy_models.utils.utils import get_last_checkpoint
@@ -116,14 +119,25 @@ if __name__ == '__main__':
     # ============================ 示例用法 ============================
     # 使用 argparse 来解析命令行参数，与原始脚本保持一致
     parser = argparse.ArgumentParser()
-    # 请根据你的实际路径进行修改
-    parser.add_argument("--action_model_folder", type=str, default="/mnt/world_foundational_model/gkz/ckpts/hub/dp-calvin")
-    parser.add_argument("--video_model_path", type=str, default="/mnt/world_foundational_model/xiaowei/VGA/VgmACT/video-prediction-policy/output/vpp_rlbench_VGM/train_2025-07-23T00-52-45/checkpoint-9000")
+    # Load configuration
+    config = get_path_config()
+    
+    # Use environment variables or config-based defaults
+    default_action_model = os.getenv('ACTION_MODEL_FOLDER', 
+                                     str(config.get_model_path('action', 'dp-calvin')))
+    default_video_model = os.getenv('VIDEO_MODEL_PATH',
+                                    str(config.get_model_path('video', 'vpp_rlbench')))
+    default_input_image = os.getenv('INPUT_IMAGE_PATH',
+                                    str(config.data_root / 'test_images' / 'test.png'))
+    
+    parser.add_argument("--action_model_folder", type=str, default=default_action_model)
+    parser.add_argument("--video_model_path", type=str, default=default_video_model)
     parser.add_argument("--clip_model_path", type=str, default="openai/clip-vit-base-patch32")
     parser.add_argument("--device", type=int, default=0)
-    parser.add_argument("--num_sampling_steps", type=int, default=10) # 示例：添加一个可配置参数
+    parser.add_argument("--num_sampling_steps", type=int, default=10)
     
-    parser.add_argument("--input_image_path", type=str, default="/mnt/world_foundational_model/gkz/prismatic-vlms/svd_ts.png", help="机器人当前观测的图像路径")
+    parser.add_argument("--input_image_path", type=str, default=default_input_image, 
+                       help="机器人当前观测的图像路径")
     parser.add_argument("--instruction", type=str, default="pick up the red block", help="需要执行的文本指令")
     args = parser.parse_args()
     
@@ -133,11 +147,24 @@ if __name__ == '__main__':
     obs = cv2.cvtColor(cv2.imread(args.input_image_path), cv2.COLOR_BGR2RGB)
     resized_image = cv2.resize(obs, (256, 256), interpolation=cv2.INTER_AREA)
     observation_image = np.array(resized_image)
-    # 检查路径是否存在
-    if not os.path.exists(args.action_model_folder):
-        print(f"Error: action_model_folder not found at '{args.action_model_folder}'")
-        print("Please update the default path in the script or provide it via command line.")
-    else:
+    # 验证路径是否存在
+    paths_to_check = [
+        (args.action_model_folder, "action_model_folder"),
+        (args.video_model_path, "video_model_path"),
+        (args.input_image_path, "input_image_path")
+    ]
+    
+    all_paths_valid = True
+    for path, name in paths_to_check:
+        if not os.path.exists(path):
+            print(f"Warning: {name} not found at '{path}'")
+            print(f"Please set the {name.upper()} environment variable or update config.yaml")
+            all_paths_valid = False
+    
+    if not all_paths_valid:
+        print("\nSome paths are missing. The model may not load correctly.")
+        print("Continuing anyway...")
+    if all_paths_valid:
         # 1. 加载模型
         loaded_assets = model_load(args)
         obs = dict()

@@ -29,10 +29,26 @@ from vasim_model.conditional_project import ModalityCompressor, TemporalTransfor
 
 import sys
 import tqdm
+import os
+from pathlib import Path
 
-# sys.path.insert(1,'/aifs4su/mmcode/worldm/RoboCrafter')
-sys.path.insert(1,'/mnt/cfs/6kpuxj/xiaowei/VGA/VgmACT/DynamiCrafter')
-from scripts.evaluation.inference import instantiate_from_config,load_model_checkpoint
+# Add parent directory to path for config import
+sys.path.insert(0, str(Path(__file__).parent.parent))
+try:
+    from config import get_path_config
+    config = get_path_config()
+    default_dynamicrafter_path = str(config.dynamicrafter_root)
+except ImportError:
+    # Fallback if config module not available
+    default_dynamicrafter_path = os.getenv('DYNAMICRAFTER_PATH', './DynamiCrafter')
+
+# Add DynamiCrafter to path
+sys.path.insert(1, default_dynamicrafter_path)
+try:
+    from scripts.evaluation.inference import instantiate_from_config, load_model_checkpoint
+except ImportError:
+    print(f"Warning: Could not import from DynamiCrafter at {default_dynamicrafter_path}")
+    print("Please set DYNAMICRAFTER_PATH environment variable or update config.yaml")
 from einops import rearrange, repeat
 from timm.models.vision_transformer import Attention, Mlp, RmsNorm, use_fused_attn
 import torchvision.transforms as transforms
@@ -122,7 +138,7 @@ class VGM(nn.Module):
     def __init__(self,
                  config_yaml: str,
                  ckpt_path: str,
-                 sys_path='/aifs4su/mmcode/worldm/videoact/VgmACT/DynamiCrafter',
+                 sys_path=None,
                  proj_dim: int = 4096,
                  fake_ddpm_step=900,
                  mode='full',
@@ -132,8 +148,19 @@ class VGM(nn.Module):
                  video_loss_rate=0.0):
         super().__init__()
         from omegaconf import OmegaConf
-        import sys 
-        sys.path.insert(1,sys_path)
+        import sys
+        
+        # Use provided sys_path or default from config/environment
+        if sys_path is None:
+            try:
+                from config import get_path_config
+                config = get_path_config()
+                sys_path = str(config.dynamicrafter_root)
+            except ImportError:
+                sys_path = os.getenv('DYNAMICRAFTER_PATH', './DynamiCrafter')
+        
+        if sys_path not in sys.path:
+            sys.path.insert(1, sys_path)
         from scripts.evaluation.inference import instantiate_from_config,load_model_checkpoint
 
         self.config_yaml = config_yaml
@@ -1092,8 +1119,24 @@ class VgmACT(nn.Module):
     
 
 if __name__ == "__main__":
-    config_yaml = "/aifs4su/mmcode/worldm/RoboCrafter/save_checkpoints/ww_training_128_v1.0_rt1/configs/model_infer.yaml"
-    ckpt_path = "/aifs4su/mmcode/worldm/RoboCrafter/save_checkpoints/ww_training_128_v1.0_rt1/checkpoints/epoch=13-step=9000.ckpt"
+    # Load configuration
+    try:
+        from config import get_path_config
+        config = get_path_config()
+        default_config_yaml = str(config.model_root / 'vgm' / 'configs' / 'model_infer.yaml')
+        default_ckpt_path = str(config.model_root / 'vgm' / 'checkpoints' / 'epoch=13-step=9000.ckpt')
+    except ImportError:
+        default_config_yaml = os.getenv('VGM_CONFIG_YAML', './checkpoints/vgm/configs/model_infer.yaml')
+        default_ckpt_path = os.getenv('VGM_CHECKPOINT', './checkpoints/vgm/checkpoints/epoch=13-step=9000.ckpt')
+    
+    config_yaml = default_config_yaml
+    ckpt_path = default_ckpt_path
+    
+    # Validate paths
+    if not Path(config_yaml).exists():
+        print(f"Warning: Config file not found at {config_yaml}")
+    if not Path(ckpt_path).exists():
+        print(f"Warning: Checkpoint not found at {ckpt_path}")
     vgm = VGM(config_yaml=config_yaml,
               ckpt_path=ckpt_path).cuda()
     image = [torch.zeros((3,128,128))*4]
