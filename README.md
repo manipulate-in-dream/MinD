@@ -1,7 +1,6 @@
 # 🧠 MinD: Learning A Dual-System World Model for Real-Time Planning and Action Consistency Video Generation
 
-**Xiaowei Chi<sup>1,2</sup>\***, **Kuangzhi Ge<sup>3</sup>\***, **Jiaming Liu<sup>3</sup>†**, **Siyuan Zhou<sup>2</sup>**, **Peidong Jia<sup>3</sup>**, **Zichen He<sup>3</sup>**, **Rui Zhao<sup>1</sup>**, **Yuzhen Liu<sup>1</sup>**, **Tingguang Li<sup>1</sup>**,  
-**Sirui Han<sup>2</sup>**, **Shanghang Zhang<sup>3</sup>✉**, **Yike Guo<sup>2</sup>✉**
+**Xiaowei Chi<sup>1,2</sup>\***, **Kuangzhi Ge<sup>3</sup>\***, **Jiaming Liu<sup>3</sup>†**, **Siyuan Zhou<sup>2</sup>**, **Peidong Jia<sup>3</sup>**, **Zichen He<sup>3</sup>**, **Kevin Zhang<sup>3</sup>**, **Rui Zhao<sup>1</sup>**, **Yuzhen Liu<sup>1</sup>**, **Tingguang Li<sup>1</sup>**, **Sirui Han<sup>2</sup>**, **Shanghang Zhang<sup>3</sup>✉**, **Yike Guo<sup>2</sup>✉**
 
 <sup>1</sup>Tencent RoboticsX, <sup>2</sup>Hong Kong University of Science and Technology,  
 <sup>3</sup>Peking University
